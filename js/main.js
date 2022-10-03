@@ -18,7 +18,7 @@ function getRandomIntegerFloat(min, max, precision = 1) {
     return NaN;
   }
   if (min > max) {
-    return getRandomIntegerFloat(max, min);
+    return getRandomIntegerFloat(max, min, precision);
   }
   return +(Math.floor(Math.random() * (max - min + 1)) + min).toFixed(precision);
 }
