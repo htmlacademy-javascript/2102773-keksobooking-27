@@ -1,13 +1,11 @@
 function getRandomIntegerInclusive(min, max) {
-  min = Math.ceil(min);
-  max = Math.floor(max);
+  const lower = Math.ceil(Math.min(min, max));
+  const upper = Math.floor(Math.max(min, max));
   if (min < 0 || max < 0) {
     return NaN;
   }
-  if (min > max) {
-    return getRandomIntegerInclusive(max, min);
-  }
-  return Math.floor(Math.random() * (max - min + 1)) + min;
+  const result = Math.random() * (upper - lower + 1) + lower;
+  return Math.floor(result);
 }
 
 function getRandomIntegerFloat(min, max, precision = 5) {
@@ -84,24 +82,18 @@ const createLocation = () => ({
 
 const getRandomArrayElement = (elements) => elements[getRandomIntegerInclusive(0, elements.length - 1)];
 
-function getArray(arrayOriginal) {
-  const maxLength = arrayOriginal.length;
-  const lengthOfArray = getRandomIntegerInclusive(1, maxLength);
-  const array = [];
+const getRandomLengthArray = (arrayOriginal) => {
+  const arr = Array.from(arrayOriginal);
+  const newArray = new Array(getRandomIntegerInclusive(1, arr.length));
 
-  while (array.length < lengthOfArray) {
-    const indexOfEl = getRandomIntegerInclusive(0, maxLength - 1);
-    const el = arrayOriginal[indexOfEl];
-
-    if (!array.includes(el)) {
-      array.push(el);
-    }
+  for (let i = 0; i < newArray.length; i++) {
+    newArray[i] = arr.splice(getRandomIntegerInclusive(0, arr.length - 1), 1).join();
   }
-  return array;
-}
+  return newArray;
+};
 
 const createOffer = () => ({
-  title:TITLES.shift(),
+  title:Array.from(TITLES.shift()).join(''),
   address:createLocation(),
   price:getRandomIntegerInclusive(100,100000),
   type:getRandomArrayElement(TYPES),
@@ -109,29 +101,24 @@ const createOffer = () => ({
   guests:getRandomIntegerInclusive(1,50),
   checkin:getRandomArrayElement(CHECKINS),
   checkout:getRandomArrayElement(CHECKOUTS),
-  features:getArray(FEATURES),
-  description:DESCRIPTIONS.shift(),
-  photos:getArray(PHOTOS),
+  features:getRandomLengthArray(FEATURES),
+  description:Array.from(DESCRIPTIONS.shift()).join(''),
+  photos:getRandomLengthArray(PHOTOS),
 });
 
 const createAvatar = () => {
   for(let i = 1; i <= 10; i++) {
-    let avatar;
-    if (i === 10) {
-      avatar = `img/avatars/user${i}.png`;
-    } else {
-      avatar = `img/avatars/user0${i}.png`;
-    }
+    const avatar = i === 10 ? `img/avatars/user${i}.png` : `img/avatars/user0${i}.png`;
     avatars.push(avatar);
   }
-  return avatars;
 };
 createAvatar();
 
-const createObject = () => ({
+const createObjectOfNotice = () => ({
   author: avatars.shift(),
   offer: createOffer(),
   location: createLocation(),
 });
 
-Array.from({length: SIMILAR_RENTAL_COUNT}, createObject);
+Array.from({length: SIMILAR_RENTAL_COUNT}, createObjectOfNotice);
+
