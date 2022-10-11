@@ -73,7 +73,6 @@ const PHOTOS = [
   'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/claire-rendall-b6kAwr1i0Iw.jpg',
 ];
 const SIMILAR_RENTAL_COUNT = 10;
-const avatars = [];
 
 const createLocation = () => ({
   lat: getRandomIntegerFloat(35.65000, 35.70000),
@@ -93,7 +92,7 @@ const getRandomLengthArray = (arrayOriginal) => {
 };
 
 const createOffer = () => ({
-  title:Array.from(TITLES.shift()).join(''),
+  title:getRandomArrayElement(TITLES),
   address:createLocation(),
   price:getRandomIntegerInclusive(100,100000),
   type:getRandomArrayElement(TYPES),
@@ -102,23 +101,21 @@ const createOffer = () => ({
   checkin:getRandomArrayElement(CHECKINS),
   checkout:getRandomArrayElement(CHECKOUTS),
   features:getRandomLengthArray(FEATURES),
-  description:Array.from(DESCRIPTIONS.shift()).join(''),
+  description:getRandomArrayElement(DESCRIPTIONS),
   photos:getRandomLengthArray(PHOTOS),
 });
 
-const createAvatar = () => {
-  for(let i = 1; i <= 10; i++) {
-    const avatar = i === 10 ? `img/avatars/user${i}.png` : `img/avatars/user0${i}.png`;
-    avatars.push(avatar);
-  }
-};
-createAvatar();
+const createAuthor = (index) => ({
+  avatar: `img/avatars/user${index.toString().padStart(2, '0')}.png`,
+});
 
-const createObjectOfNotice = () => ({
-  author: avatars.shift(),
+const createObjectOfNotice = (index) => ({
+  author: createAuthor(index),
   offer: createOffer(),
   location: createLocation(),
 });
 
-Array.from({length: SIMILAR_RENTAL_COUNT}, createObjectOfNotice);
+const getObjectOfNotice = () => Array.from({length: SIMILAR_RENTAL_COUNT}, (_, offerIndex) => createObjectOfNotice(offerIndex + 1));
+
+getObjectOfNotice();
 
