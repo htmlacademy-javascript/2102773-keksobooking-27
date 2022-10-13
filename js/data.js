@@ -1,7 +1,4 @@
-import { getRandomArrayElement } from './util.js';
-import { getRandomIntegerFloat } from './util.js';
-import { getRandomLengthArray } from './util.js';
-import { getRandomIntegerInclusive } from './util.js';
+import { getRandomArrayElement, getRandomIntegerFloat, getRandomLengthArray, getRandomIntegerInclusive } from './util.js';
 
 const TITLES = [
   'Заголовок 1',
@@ -88,6 +85,6 @@ const createObjectOfNotice = (index) => ({
   location: createLocation(),
 });
 
-const getObjectOfNotice = () => Array.from({length: SIMILAR_RENTAL_COUNT}, (_, offerIndex) => createObjectOfNotice(offerIndex + 1));
+const getArrayOfNoticeObjects = () => Array.from({length: SIMILAR_RENTAL_COUNT}, (_, offerIndex) => createObjectOfNotice(offerIndex + 1));
 
-export { getObjectOfNotice };
+export { getArrayOfNoticeObjects };

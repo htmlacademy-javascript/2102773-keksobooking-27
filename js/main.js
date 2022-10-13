@@ -1,2 +1,2 @@
-import { getObjectOfNotice } from './data.js';
-getObjectOfNotice();
+import { getArrayOfNoticeObjects } from './data.js';
+getArrayOfNoticeObjects();
