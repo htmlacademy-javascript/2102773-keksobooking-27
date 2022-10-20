@@ -7,10 +7,8 @@ function getRandomIntegerInclusive(min, max) {
   const result = Math.random() * (upper - lower + 1) + lower;
   return Math.floor(result);
 }
-export { getRandomIntegerInclusive };
 
 const getRandomArrayElement = (elements) => elements[getRandomIntegerInclusive(0, elements.length - 1)];
-export { getRandomArrayElement };
 
 function getRandomIntegerFloat(min, max, precision = 5) {
   if (min < 0 || max < 0 || precision < 0) {
@@ -21,16 +19,21 @@ function getRandomIntegerFloat(min, max, precision = 5) {
   }
   return +(Math.random() * (max - min) + min).toFixed(precision);
 }
-export { getRandomIntegerFloat };
 
 const getRandomLengthArray = (arrayOriginal) => {
-  const arrLocal = Array.from(arrayOriginal);
-  const newArray = new Array(getRandomIntegerInclusive(1, arrLocal.length));
+  const arrayLocal = Array.from(arrayOriginal);
 
-  for (let i = 0; i < newArray.length; i++) {
-    newArray[i] = arrLocal.splice(getRandomIntegerInclusive(0, arrLocal.length - 1), 1).join();
+  for (let i = 0; i < arrayLocal.length; i++) {
+    const j = getRandomIntegerInclusive(0, arrayLocal.length - 1);
+    const temp = arrayLocal[i];
+    arrayLocal[i] = arrayLocal[j];
+    arrayLocal[j] = temp;
   }
-  return newArray;
+  const arrayNew = arrayLocal.slice(getRandomIntegerInclusive(0, arrayLocal.length - 1));
+  return arrayNew;
 };
-export { getRandomLengthArray };
 
+export { getRandomIntegerInclusive };
+export { getRandomIntegerFloat };
+export { getRandomArrayElement };
+export { getRandomLengthArray };

@@ -54,20 +54,48 @@ const PHOTOS = [
   'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/brandon-hoogenboom-SNxQGWxZQi0.jpg',
   'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/claire-rendall-b6kAwr1i0Iw.jpg',
 ];
+
+const location = {
+  MIN_LATITUDE: 35.65000,
+  MAX_LALITUDE: 35.70000,
+  MIN_LONGITUDE: 139.70000,
+  MAX_LONGITUDE: 139.80000
+};
+const price = {
+  MIN_PRICE: 100,
+  MAX_PRISE: 10000
+};
+const rooms = {
+  MIN_ROOMS: 1,
+  MAX_ROOMS: 50
+};
+const guests = {
+  MIN_GUESTS: 1,
+  MAX_GUESTS: 50
+};
+
 const SIMILAR_RENTAL_COUNT = 10;
 
+const TYPES_DICTIONARY = {
+  flat: 'Квартира',
+  bungalow: 'Бунгало',
+  house:'Дом',
+  palace:'Дворец',
+  hotel:'Отель'
+};
+
 const createLocation = () => ({
-  lat: getRandomIntegerFloat(35.65000, 35.70000),
-  lng: getRandomIntegerFloat(139.70000, 139.80000),
+  lat: getRandomIntegerFloat(location.MIN_LATITUDE, location.MAX_LALITUDE),
+  lng: getRandomIntegerFloat(location.MIN_LONGITUDE, location.MAX_LONGITUDE),
 });
 
 const createOffer = () => ({
   title:getRandomArrayElement(TITLES),
   address:createLocation(),
-  price:getRandomIntegerInclusive(100,100000),
-  type:getRandomArrayElement(TYPES),
-  rooms:getRandomIntegerInclusive(1,50),
-  guests:getRandomIntegerInclusive(1,50),
+  price:getRandomIntegerInclusive(price.MIN_PRICE,price.MAX_PRISE),
+  type:TYPES_DICTIONARY[(getRandomArrayElement(TYPES))],
+  rooms:getRandomIntegerInclusive(rooms.MIN_ROOMS,rooms.MAX_ROOMS),
+  guests:getRandomIntegerInclusive(guests.MIN_GUESTS,guests.MAX_GUESTS),
   checkin:getRandomArrayElement(CHECKINS),
   checkout:getRandomArrayElement(CHECKOUTS),
   features:getRandomLengthArray(FEATURES),
@@ -84,7 +112,6 @@ const createObjectOfNotice = (index) => ({
   offer: createOffer(),
   location: createLocation(),
 });
-
 const getArrayOfNoticeObjects = () => Array.from({length: SIMILAR_RENTAL_COUNT}, (_, offerIndex) => createObjectOfNotice(offerIndex + 1));
 
 export { getArrayOfNoticeObjects };
