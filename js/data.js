@@ -54,22 +54,21 @@ const PHOTOS = [
   'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/brandon-hoogenboom-SNxQGWxZQi0.jpg',
   'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/claire-rendall-b6kAwr1i0Iw.jpg',
 ];
-
-const location = {
+const Location = {
   MIN_LATITUDE: 35.65000,
   MAX_LALITUDE: 35.70000,
   MIN_LONGITUDE: 139.70000,
   MAX_LONGITUDE: 139.80000
 };
-const price = {
+const Price = {
   MIN_PRICE: 100,
   MAX_PRISE: 10000
 };
-const rooms = {
+const Rooms = {
   MIN_ROOMS: 1,
   MAX_ROOMS: 50
 };
-const guests = {
+const Guests = {
   MIN_GUESTS: 1,
   MAX_GUESTS: 50
 };
@@ -84,18 +83,18 @@ const TYPES_DICTIONARY = {
   hotel:'Отель'
 };
 
-const createLocation = () => ({
-  lat: getRandomIntegerFloat(location.MIN_LATITUDE, location.MAX_LALITUDE),
-  lng: getRandomIntegerFloat(location.MIN_LONGITUDE, location.MAX_LONGITUDE),
+const getLocation = () => ({
+  lat: getRandomIntegerFloat(Location.MIN_LATITUDE, Location.MAX_LALITUDE),
+  lng: getRandomIntegerFloat(Location.MIN_LONGITUDE, Location.MAX_LONGITUDE),
 });
 
-const createOffer = () => ({
+const getOffer = () => ({
   title:getRandomArrayElement(TITLES),
-  address:createLocation(),
-  price:getRandomIntegerInclusive(price.MIN_PRICE,price.MAX_PRISE),
+  address:getLocation(),
+  price:getRandomIntegerInclusive(Price.MIN_PRICE,Price.MAX_PRISE),
   type:TYPES_DICTIONARY[(getRandomArrayElement(TYPES))],
-  rooms:getRandomIntegerInclusive(rooms.MIN_ROOMS,rooms.MAX_ROOMS),
-  guests:getRandomIntegerInclusive(guests.MIN_GUESTS,guests.MAX_GUESTS),
+  rooms:getRandomIntegerInclusive(Rooms.MIN_ROOMS,Rooms.MAX_ROOMS),
+  guests:getRandomIntegerInclusive(Guests.MIN_GUESTS,Guests.MAX_GUESTS),
   checkin:getRandomArrayElement(CHECKINS),
   checkout:getRandomArrayElement(CHECKOUTS),
   features:getRandomLengthArray(FEATURES),
@@ -103,15 +102,15 @@ const createOffer = () => ({
   photos:getRandomLengthArray(PHOTOS),
 });
 
-const createAuthor = (index) => ({
+const getAuthor = (index) => ({
   avatar: `img/avatars/user${index.toString().padStart(2, '0')}.png`,
 });
 
-const createObjectOfNotice = (index) => ({
-  author: createAuthor(index),
-  offer: createOffer(),
-  location: createLocation(),
+const getObjectOfNotice = (index) => ({
+  author: getAuthor(index),
+  offer: getOffer(),
+  location: getLocation(),
 });
-const getArrayOfNoticeObjects = () => Array.from({length: SIMILAR_RENTAL_COUNT}, (_, offerIndex) => createObjectOfNotice(offerIndex + 1));
+const getArrayOfNoticeObjects = () => Array.from({length: SIMILAR_RENTAL_COUNT}, (_, offerIndex) => getObjectOfNotice(offerIndex + 1));
 
 export { getArrayOfNoticeObjects };

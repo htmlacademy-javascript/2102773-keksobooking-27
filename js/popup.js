@@ -1,49 +1,73 @@
 import { getArrayOfNoticeObjects } from './data.js';
 
 const cardTemplate = document.querySelector('#card').content.querySelector('.popup');
-const mapCanvas = document.querySelector('#map-canvas');
-const mapsCanvas = getArrayOfNoticeObjects();
+const mapCanvasElement = document.querySelector('#map-canvas');
+const mapCanvasElements = getArrayOfNoticeObjects();
 const popupFragment = document.createDocumentFragment();
 
-mapsCanvas.forEach(({author:{avatar}, offer:{title, address:{lat, lng}, price, description, checkin, checkout, rooms, guests, type, features, photos}}) => {
+const getPhoto = (mapElement, photos) => {
+  const photosContainer = mapElement.querySelector('.popup__photos');
+  if (photos && photos.length) {
+    const photosListFragment = document.createDocumentFragment();
+    photos.forEach((photo) => {
+      const photoListItem = mapElement.querySelector('.popup__photo');
+      const clonePhotos = photoListItem.cloneNode(true);
+      clonePhotos.src = photo;
+      photosListFragment.appendChild(clonePhotos);
+    });
+    photosContainer.innerHTML = '';
+    photosContainer.appendChild(photosListFragment);
+  }
+  else {
+    photosContainer.classList.add('hidden');
+  }
+};
+
+const getDescription = (mapElement, description) => {
+  const descriptionElement = mapElement.querySelector('.popup__description');
+  if (description && description.length) {
+    descriptionElement.textContent = description;
+  }
+  else {
+    descriptionElement.classList.add('hidden');
+  }
+};
+
+const getFeatures = (mapElement, features) => {
+  const featuresElement = mapElement.querySelector('.popup__features');
+  if (features && features.length) {
+    featuresElement.innerHTML = '';
+    features.forEach((feature) => {
+      const featuresListItem = document.createElement('li');
+      featuresListItem.classList.add('popup__feature');
+      featuresListItem.classList.add(`popup__feature--${ feature}`);
+      featuresElement.appendChild(featuresListItem);
+    });
+  } else {
+    featuresElement.classList.add('hidden');
+  }
+};
+
+mapCanvasElements.forEach(({author, offer}) => {
+  const {avatar} = author;
+  const {title, price, rooms, guests, photos} = offer;
+  const {description, features, checkin, checkout, type} = offer;
+  const {address:{lat, lng}} = offer;
+
   const mapElement = cardTemplate.cloneNode(true);
 
   mapElement.querySelector('.popup__avatar').src = avatar;
-
-  const featuresConteiner = mapElement.querySelector('.popup__features');
-  featuresConteiner.innerHTML = '';
-  features.forEach((feature) => {
-    const featuresListItem = document.createElement('li');
-    featuresListItem.classList.add('popup__feature');
-    featuresListItem.classList.add(`popup__feature--${ feature}`);
-    featuresConteiner.appendChild(featuresListItem);
-  });
-
-  const photosContainer = mapElement.querySelector('.popup__photos');
-  const photosListFragment = document.createDocumentFragment();
-  photos.forEach((photo) => {
-    const photoListItem = mapElement.querySelector('.popup__photo');
-    const clonePhotos = photoListItem.cloneNode(true);
-    clonePhotos.src = photo;
-    photosListFragment.appendChild(clonePhotos);
-  });
-  photosContainer.innerHTML = '';
-  photosContainer.appendChild(photosListFragment);
-
   mapElement.querySelector('.popup__title').textContent = title;
   mapElement.querySelector('.popup__text--address').textContent = `${lat },${ lng}`;
-  mapElement.querySelector('.popup__text--price').textContent = `${price } ₽/ночь`;
-  mapElement.querySelector('.popup__description').textContent = description;
+  mapElement.querySelector('[data-price]').textContent = price;
   mapElement.querySelector('.popup__text--capacity').textContent = `${rooms } комнаты для ${ guests } гостей`;
   mapElement.querySelector('.popup__text--time').textContent = `Заезд после ${ checkin }, выезд до ${ checkout}`;
   mapElement.querySelector('.popup__type').textContent = type;
 
-  if (!description) {
-    mapElement.querySelector('.popup__description').classList.add('hidden');
-  }
-  if(features <= []) {
-    featuresConteiner.classList.add('hidden');
-  }
+  getPhoto(mapElement, photos);
+  getDescription(mapElement, description);
+  getFeatures(mapElement, features);
+
   if (!checkin || !checkout) {
     mapElement.querySelector('.popup__text--time').classList.add('hidden');
   }
@@ -53,5 +77,6 @@ mapsCanvas.forEach(({author:{avatar}, offer:{title, address:{lat, lng}, price, d
 
   popupFragment.appendChild(mapElement);
 });
+
 const arrayFragment = popupFragment.querySelectorAll('.popup');
-mapCanvas.appendChild(arrayFragment[2]);
+mapCanvasElement.appendChild(arrayFragment[2]);
