@@ -5,7 +5,7 @@ const mapCanvasElement = document.querySelector('#map-canvas');
 const mapCanvasElements = getArrayOfNoticeObjects();
 const popupFragment = document.createDocumentFragment();
 
-const getPhoto = (mapElement, photos) => {
+const renderPhoto = (mapElement, photos) => {
   const photosContainer = mapElement.querySelector('.popup__photos');
   if (photos && photos.length) {
     const photosListFragment = document.createDocumentFragment();
@@ -23,7 +23,7 @@ const getPhoto = (mapElement, photos) => {
   }
 };
 
-const getDescription = (mapElement, description) => {
+const renderDescription = (mapElement, description) => {
   const descriptionElement = mapElement.querySelector('.popup__description');
   if (description && description.length) {
     descriptionElement.textContent = description;
@@ -33,7 +33,7 @@ const getDescription = (mapElement, description) => {
   }
 };
 
-const getFeatures = (mapElement, features) => {
+const renderFeatures = (mapElement, features) => {
   const featuresElement = mapElement.querySelector('.popup__features');
   if (features && features.length) {
     featuresElement.innerHTML = '';
@@ -64,9 +64,9 @@ mapCanvasElements.forEach(({author, offer}) => {
   mapElement.querySelector('.popup__text--time').textContent = `Заезд после ${ checkin }, выезд до ${ checkout}`;
   mapElement.querySelector('.popup__type').textContent = type;
 
-  getPhoto(mapElement, photos);
-  getDescription(mapElement, description);
-  getFeatures(mapElement, features);
+  renderPhoto(mapElement, photos);
+  renderDescription(mapElement, description);
+  renderFeatures(mapElement, features);
 
   if (!checkin || !checkout) {
     mapElement.querySelector('.popup__text--time').classList.add('hidden');

@@ -56,21 +56,21 @@ const PHOTOS = [
 ];
 const Location = {
   MIN_LATITUDE: 35.65000,
-  MAX_LALITUDE: 35.70000,
+  MAX_LATITUDE: 35.70000,
   MIN_LONGITUDE: 139.70000,
   MAX_LONGITUDE: 139.80000
 };
 const Price = {
-  MIN_PRICE: 100,
-  MAX_PRISE: 10000
+  MIN: 100,
+  MAX: 10000
 };
 const Rooms = {
-  MIN_ROOMS: 1,
-  MAX_ROOMS: 50
+  MIN: 1,
+  MAX: 50
 };
 const Guests = {
-  MIN_GUESTS: 1,
-  MAX_GUESTS: 50
+  MIN: 1,
+  MAX: 50
 };
 
 const SIMILAR_RENTAL_COUNT = 10;
@@ -84,17 +84,17 @@ const TYPES_DICTIONARY = {
 };
 
 const getLocation = () => ({
-  lat: getRandomIntegerFloat(Location.MIN_LATITUDE, Location.MAX_LALITUDE),
+  lat: getRandomIntegerFloat(Location.MIN_LATITUDE, Location.MAX_LATITUDE),
   lng: getRandomIntegerFloat(Location.MIN_LONGITUDE, Location.MAX_LONGITUDE),
 });
 
 const getOffer = () => ({
   title:getRandomArrayElement(TITLES),
   address:getLocation(),
-  price:getRandomIntegerInclusive(Price.MIN_PRICE,Price.MAX_PRISE),
+  price:getRandomIntegerInclusive(Price.MIN,Price.MAX),
   type:TYPES_DICTIONARY[(getRandomArrayElement(TYPES))],
-  rooms:getRandomIntegerInclusive(Rooms.MIN_ROOMS,Rooms.MAX_ROOMS),
-  guests:getRandomIntegerInclusive(Guests.MIN_GUESTS,Guests.MAX_GUESTS),
+  rooms:getRandomIntegerInclusive(Rooms.MIN,Rooms.MAX),
+  guests:getRandomIntegerInclusive(Guests.MIN,Guests.MAX),
   checkin:getRandomArrayElement(CHECKINS),
   checkout:getRandomArrayElement(CHECKOUTS),
   features:getRandomLengthArray(FEATURES),
