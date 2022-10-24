@@ -54,20 +54,47 @@ const PHOTOS = [
   'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/brandon-hoogenboom-SNxQGWxZQi0.jpg',
   'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/claire-rendall-b6kAwr1i0Iw.jpg',
 ];
+const Location = {
+  MIN_LATITUDE: 35.65000,
+  MAX_LATITUDE: 35.70000,
+  MIN_LONGITUDE: 139.70000,
+  MAX_LONGITUDE: 139.80000
+};
+const Price = {
+  MIN: 100,
+  MAX: 10000
+};
+const Rooms = {
+  MIN: 1,
+  MAX: 50
+};
+const Guests = {
+  MIN: 1,
+  MAX: 50
+};
+
 const SIMILAR_RENTAL_COUNT = 10;
 
-const createLocation = () => ({
-  lat: getRandomIntegerFloat(35.65000, 35.70000),
-  lng: getRandomIntegerFloat(139.70000, 139.80000),
+const TYPES_DICTIONARY = {
+  flat: 'Квартира',
+  bungalow: 'Бунгало',
+  house:'Дом',
+  palace:'Дворец',
+  hotel:'Отель'
+};
+
+const getLocation = () => ({
+  lat: getRandomIntegerFloat(Location.MIN_LATITUDE, Location.MAX_LATITUDE),
+  lng: getRandomIntegerFloat(Location.MIN_LONGITUDE, Location.MAX_LONGITUDE),
 });
 
-const createOffer = () => ({
+const getOffer = () => ({
   title:getRandomArrayElement(TITLES),
-  address:createLocation(),
-  price:getRandomIntegerInclusive(100,100000),
-  type:getRandomArrayElement(TYPES),
-  rooms:getRandomIntegerInclusive(1,50),
-  guests:getRandomIntegerInclusive(1,50),
+  address:getLocation(),
+  price:getRandomIntegerInclusive(Price.MIN,Price.MAX),
+  type:TYPES_DICTIONARY[(getRandomArrayElement(TYPES))],
+  rooms:getRandomIntegerInclusive(Rooms.MIN,Rooms.MAX),
+  guests:getRandomIntegerInclusive(Guests.MIN,Guests.MAX),
   checkin:getRandomArrayElement(CHECKINS),
   checkout:getRandomArrayElement(CHECKOUTS),
   features:getRandomLengthArray(FEATURES),
@@ -75,16 +102,15 @@ const createOffer = () => ({
   photos:getRandomLengthArray(PHOTOS),
 });
 
-const createAuthor = (index) => ({
+const getAuthor = (index) => ({
   avatar: `img/avatars/user${index.toString().padStart(2, '0')}.png`,
 });
 
-const createObjectOfNotice = (index) => ({
-  author: createAuthor(index),
-  offer: createOffer(),
-  location: createLocation(),
+const getObjectOfNotice = (index) => ({
+  author: getAuthor(index),
+  offer: getOffer(),
+  location: getLocation(),
 });
-
-const getArrayOfNoticeObjects = () => Array.from({length: SIMILAR_RENTAL_COUNT}, (_, offerIndex) => createObjectOfNotice(offerIndex + 1));
+const getArrayOfNoticeObjects = () => Array.from({length: SIMILAR_RENTAL_COUNT}, (_, offerIndex) => getObjectOfNotice(offerIndex + 1));
 
 export { getArrayOfNoticeObjects };
