@@ -62,7 +62,7 @@ const renderPopupElements = (index) => {
     mapElement.querySelector('.popup__title').textContent = title;
     mapElement.querySelector('.popup__text--address').textContent = `${lat },${ lng}`;
     mapElement.querySelector('[data-price]').textContent = price;
-    mapElement.querySelector('.popup__text--capacity').textContent = `${rooms } комнаты для ${ guests } гостей`;
+    mapElement.querySelector('.popup__text--capacity').textContent = `${rooms} ${rooms === 1 ? 'комната' : 'комнат(ы)'} для ${ guests } ${guests === 1 ? 'гостя' : 'гостей'}`;
     mapElement.querySelector('.popup__text--time').textContent = `Заезд после ${ checkin }, выезд до ${ checkout}`;
     mapElement.querySelector('.popup__type').textContent = type;
 

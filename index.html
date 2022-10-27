@@ -90,8 +90,11 @@
           <input id="title" name="title" type="text"
           placeholder="Милая, уютная квартирка в центре Токио"
           required
+          minlength="30"
+          maxlength="100"
           data-pristine-required-message="Обязательное поле"
-          >
+          data-pristine-minlength-message="Минимальная длина 30 символа"
+          data-pristine-maxlength-message="Максимальная длина 100 символов">
          </fieldset>
         <fieldset class="ad-form__element ad-form__element--wide">
           <label class="ad-form__label" for="address">Адрес (координаты)</label>
@@ -114,7 +117,9 @@
           <input id="price" name="price" type="number"
           placeholder="5000"
           required
-          data-pristine-required-message="Обязательное поле">
+          max="100000"
+          data-pristine-required-message="Обязательное поле"
+          data-pristine-max-message="Максимальная цена за ночь 100000">
           <div class="ad-form__slider"></div>
         </fieldset>
         <fieldset class="ad-form__element ad-form__element--time">
