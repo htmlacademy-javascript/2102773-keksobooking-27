@@ -66,11 +66,11 @@ const Price = {
 };
 const Rooms = {
   MIN: 1,
-  MAX: 50
+  MAX: 6
 };
 const Guests = {
   MIN: 1,
-  MAX: 50
+  MAX: 6
 };
 
 const SIMILAR_RENTAL_COUNT = 10;
