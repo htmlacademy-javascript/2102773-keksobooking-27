@@ -1,5 +1,21 @@
 const noticeForm = document.querySelector('.ad-form');
 
+const turnAdFormOff = () => {
+  noticeForm.classList.add('ad-form--disabled');
+  const fieldsets = noticeForm.querySelectorAll('fieldset');
+  fieldsets.forEach((fieldset) => {
+    fieldset.disabled = true;
+  });
+};
+
+const turnAdFormOn = () => {
+  noticeForm.classList.remove('ad-form--disabled');
+  const fieldsets = noticeForm.querySelectorAll('fieldset');
+  fieldsets.forEach((fieldset) => {
+    fieldset.disabled = false;
+  });
+};
+
 const pristine = new Pristine(noticeForm, {
   classTo: 'ad-form__element',
   errorClass: 'ad-form__element--invalid',
@@ -19,7 +35,7 @@ function validateRooms () {
   else {return roomsField.value >= 100 && capacityField.value <= 0;}
 }
 
-function gerRoomsErrorMessage () {
+function gerRoomsErrorMassage () {
   let errorText;
   if (roomsField.value < 100 && capacityField.value > 0) {
     errorText = `Не более ${roomsField.value} ${roomsField.value <= 1 ? 'гостя' : 'гостей'}`;
@@ -33,7 +49,7 @@ function gerRoomsErrorMessage () {
   return errorText;
 }
 
-pristine.addValidator(capacityField, validateRooms, gerRoomsErrorMessage);
+pristine.addValidator(capacityField, validateRooms, gerRoomsErrorMassage);
 
 const timein = noticeForm.querySelector('#timein');
 const timeout = noticeForm.querySelector('#timeout');
@@ -69,3 +85,5 @@ noticeForm.addEventListener('submit', (evt) => {
   const isValid = pristine.validate();
   if(!isValid) {evt.preventDefault();}
 });
+
+export { turnAdFormOff, turnAdFormOn };
