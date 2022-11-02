@@ -1,26 +1,26 @@
-import { turnAdFormOn, turnAdFormOff } from './notice-form.js';
-import { turnFilterOn, turnFilterOff } from './filter.js';
+import { activatedOn, activatedOff } from './notice-form.js';
+import { turnOn, turnOff } from './filter.js';
 import { getArrayOfNoticeObjects } from './data.js';
-import { renderPopupElements } from './popup.js';
-
-turnAdFormOff();
-turnFilterOff();
+import { renderElements } from './popup.js';
 
 const noticeForm = document.querySelector('.ad-form');
 const address = noticeForm.querySelector('#address');
-const resetButton = document.querySelector('.ad-form__reset');
 const mapCanvasElements = getArrayOfNoticeObjects();
+const START_COORDINATE = {
+  lat: 35.68944,
+  lng: 139.69171,
+};
 
+turnOff();
+activatedOff();
 
 const map = L.map('map-canvas')
   .on('load', () => {
-    turnAdFormOn();
-    turnFilterOn();
+    turnOn();
+    activatedOn();
+    address.value = `${START_COORDINATE.lat.toFixed(5)}, ${START_COORDINATE.lng.toFixed(5)}`;
   })
-  .setView({
-    lat: 35.68944,
-    lng: 139.69171,
-  }, 12);
+  .setView(START_COORDINATE, 12);
 
 L.tileLayer(
   'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
@@ -36,10 +36,7 @@ const mainPinIcon = L.icon({
 });
 
 const mainPinMarker = L.marker(
-  {
-    lat: 35.68944,
-    lng: 139.69171,
-  },
+  START_COORDINATE,
   {
     draggable: true,
     icon: mainPinIcon,
@@ -71,17 +68,7 @@ const createMarker = (index) => {
       icon,
     },
   );
-  marker.addTo(markerGroup).bindPopup(renderPopupElements(index));
-
-  resetButton.addEventListener('click', () => {
-    mainPinMarker.setLatLng({
-      lat: 35.68944,
-      lng: 139.69171,
-    });
-    marker.closePopup(renderPopupElements(index));
-  });
-
+  marker.addTo(markerGroup).bindPopup(renderElements(index));
 };
 
-mapCanvasElements.forEach((index) => {createMarker(index);
-});
+mapCanvasElements.forEach((index) => {createMarker(index);});

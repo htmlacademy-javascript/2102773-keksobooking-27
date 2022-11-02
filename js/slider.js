@@ -1,6 +1,9 @@
 const sliderElement = document.querySelector('.ad-form__slider');
 const priceElement = document.querySelector('#price');
-const resetButton = document.querySelector('.ad-form__reset');
+
+const onPriceChange = () => {
+  sliderElement.noUiSlider.set(priceElement.value);
+};
 
 noUiSlider.create(sliderElement, {
   range: {
@@ -24,10 +27,6 @@ sliderElement.noUiSlider.on('slide', () => {
   priceElement.value = sliderElement.noUiSlider.get();
 });
 
-priceElement.addEventListener('change', function() {
-  sliderElement.noUiSlider.set(this.value);
-});
+priceElement.addEventListener('change', onPriceChange);
 
-resetButton.addEventListener('click', () => {
-  sliderElement.noUiSlider.set(0);
-});
+export { onPriceChange };

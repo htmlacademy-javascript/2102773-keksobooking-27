@@ -1,19 +1,53 @@
-const noticeForm = document.querySelector('.ad-form');
+import { onPriceChange } from './slider.js';
 
-const turnAdFormOff = () => {
+const noticeForm = document.querySelector('.ad-form');
+const timein = noticeForm.querySelector('#timein');
+const timeout = noticeForm.querySelector('#timeout');
+const priceField = noticeForm.querySelector('#price');
+const typeField = noticeForm.querySelector('#type');
+
+const minPrice = {
+  'bungalow' : 0,
+  'flat' : 1000,
+  'hotel' : 3000,
+  'house' : 5000,
+  'palace' : 10000
+};
+
+const onTimeoutChange = () => {
+  timeout.value = timein.value;
+};
+const onTimeinChange = () => {
+  timein.value = timeout.value;
+};
+const onTypeChange = () => {
+  priceField.placeholder = minPrice[typeField.value];
+  priceField.min = minPrice[typeField.value];
+};
+
+
+const activatedOff = () => {
   noticeForm.classList.add('ad-form--disabled');
   const fieldsets = noticeForm.querySelectorAll('fieldset');
   fieldsets.forEach((fieldset) => {
     fieldset.disabled = true;
   });
+  timein.removeEventListener('change', onTimeoutChange);
+  timeout.removeEventListener('change', onTimeinChange);
+  typeField.removeEventListener('change', onTypeChange);
+  priceField.removeEventListener('change', onPriceChange);
 };
 
-const turnAdFormOn = () => {
+const activatedOn = () => {
   noticeForm.classList.remove('ad-form--disabled');
   const fieldsets = noticeForm.querySelectorAll('fieldset');
   fieldsets.forEach((fieldset) => {
     fieldset.disabled = false;
   });
+  timein.addEventListener('change', onTimeoutChange);
+  timeout.addEventListener('change', onTimeinChange);
+  typeField.addEventListener('change', onTypeChange);
+  priceField.addEventListener('change', onPriceChange);
 };
 
 const pristine = new Pristine(noticeForm, {
@@ -51,27 +85,6 @@ function gerRoomsErrorMassage () {
 
 pristine.addValidator(capacityField, validateRooms, gerRoomsErrorMassage);
 
-const timein = noticeForm.querySelector('#timein');
-const timeout = noticeForm.querySelector('#timeout');
-
-timein.addEventListener('change', () =>{timeout.value = timein.value;});
-timeout.addEventListener('change', () => {timein.value = timeout.value;});
-
-const priceField = noticeForm.querySelector('#price');
-const minPrice = {
-  'bungalow' : 0,
-  'flat' : 1000,
-  'hotel' : 3000,
-  'house' : 5000,
-  'palace' : 10000
-};
-const typeField = noticeForm.querySelector('#type');
-
-typeField.addEventListener('change', () => {
-  priceField.placeholder = minPrice[typeField.value];
-  priceField.min = minPrice[typeField.value];
-});
-
 function validatePrice () {
   return priceField.value >= Number(priceField.min);
 }
@@ -86,4 +99,4 @@ noticeForm.addEventListener('submit', (evt) => {
   if(!isValid) {evt.preventDefault();}
 });
 
-export { turnAdFormOff, turnAdFormOn };
+export { activatedOff, activatedOn };

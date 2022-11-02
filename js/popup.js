@@ -42,7 +42,7 @@ const renderFeatures = (mapElement, features) => {
   }
 };
 
-const renderPopupElements = (index) => {
+const renderElements = (index) => {
   const {avatar} = index.author;
   const {title, price, rooms, guests, photos} = index.offer;
   const {description, features, checkin, checkout, type} = index.offer;
@@ -71,4 +71,4 @@ const renderPopupElements = (index) => {
   return mapElement;
 };
 
-export { renderPopupElements };
+export { renderElements };
