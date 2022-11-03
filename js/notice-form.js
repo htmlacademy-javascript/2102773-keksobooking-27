@@ -1,4 +1,54 @@
+import { onPriceChange } from './slider.js';
+
 const noticeForm = document.querySelector('.ad-form');
+const timein = noticeForm.querySelector('#timein');
+const timeout = noticeForm.querySelector('#timeout');
+const priceField = noticeForm.querySelector('#price');
+const typeField = noticeForm.querySelector('#type');
+
+const minPrice = {
+  'bungalow' : 0,
+  'flat' : 1000,
+  'hotel' : 3000,
+  'house' : 5000,
+  'palace' : 10000
+};
+
+const onTimeoutChange = () => {
+  timeout.value = timein.value;
+};
+const onTimeinChange = () => {
+  timein.value = timeout.value;
+};
+const onTypeChange = () => {
+  priceField.placeholder = minPrice[typeField.value];
+  priceField.min = minPrice[typeField.value];
+};
+
+
+const toggleOff = () => {
+  noticeForm.classList.add('ad-form--disabled');
+  const fieldsets = noticeForm.querySelectorAll('fieldset');
+  fieldsets.forEach((fieldset) => {
+    fieldset.disabled = true;
+  });
+  timein.removeEventListener('change', onTimeoutChange);
+  timeout.removeEventListener('change', onTimeinChange);
+  typeField.removeEventListener('change', onTypeChange);
+  priceField.removeEventListener('change', onPriceChange);
+};
+
+const toggleOn = () => {
+  noticeForm.classList.remove('ad-form--disabled');
+  const fieldsets = noticeForm.querySelectorAll('fieldset');
+  fieldsets.forEach((fieldset) => {
+    fieldset.disabled = false;
+  });
+  timein.addEventListener('change', onTimeoutChange);
+  timeout.addEventListener('change', onTimeinChange);
+  typeField.addEventListener('change', onTypeChange);
+  priceField.addEventListener('change', onPriceChange);
+};
 
 const pristine = new Pristine(noticeForm, {
   classTo: 'ad-form__element',
@@ -19,7 +69,7 @@ function validateRooms () {
   else {return roomsField.value >= 100 && capacityField.value <= 0;}
 }
 
-function gerRoomsErrorMessage () {
+function gerRoomsErrorMassage () {
   let errorText;
   if (roomsField.value < 100 && capacityField.value > 0) {
     errorText = `Не более ${roomsField.value} ${roomsField.value <= 1 ? 'гостя' : 'гостей'}`;
@@ -33,28 +83,7 @@ function gerRoomsErrorMessage () {
   return errorText;
 }
 
-pristine.addValidator(capacityField, validateRooms, gerRoomsErrorMessage);
-
-const timein = noticeForm.querySelector('#timein');
-const timeout = noticeForm.querySelector('#timeout');
-
-timein.addEventListener('change', () =>{timeout.value = timein.value;});
-timeout.addEventListener('change', () => {timein.value = timeout.value;});
-
-const priceField = noticeForm.querySelector('#price');
-const minPrice = {
-  'bungalow' : 0,
-  'flat' : 1000,
-  'hotel' : 3000,
-  'house' : 5000,
-  'palace' : 10000
-};
-const typeField = noticeForm.querySelector('#type');
-
-typeField.addEventListener('change', () => {
-  priceField.placeholder = minPrice[typeField.value];
-  priceField.min = minPrice[typeField.value];
-});
+pristine.addValidator(capacityField, validateRooms, gerRoomsErrorMassage);
 
 function validatePrice () {
   return priceField.value >= Number(priceField.min);
@@ -69,3 +98,5 @@ noticeForm.addEventListener('submit', (evt) => {
   const isValid = pristine.validate();
   if(!isValid) {evt.preventDefault();}
 });
+
+export { toggleOff, toggleOn };

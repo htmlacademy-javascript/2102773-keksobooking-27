@@ -1,10 +1,4 @@
-import { getArrayOfNoticeObjects } from './data.js';
-
 const cardTemplate = document.querySelector('#card').content.querySelector('.popup');
-const mapCanvasElement = document.querySelector('#map-canvas');
-const mapCanvasElements = getArrayOfNoticeObjects();
-
-
 const renderPhoto = (mapElement, photos) => {
   const photosContainer = mapElement.querySelector('.popup__photos');
   if (photos && photos.length) {
@@ -48,40 +42,33 @@ const renderFeatures = (mapElement, features) => {
   }
 };
 
-const renderPopupElements = (index) => {
-  const popupFragment = document.createDocumentFragment();
-  mapCanvasElements.forEach(({author, offer}) => {
-    const {avatar} = author;
-    const {title, price, rooms, guests, photos} = offer;
-    const {description, features, checkin, checkout, type} = offer;
-    const {address:{lat, lng}} = offer;
+const renderElements = (index) => {
+  const {avatar} = index.author;
+  const {title, price, rooms, guests, photos} = index.offer;
+  const {description, features, checkin, checkout, type} = index.offer;
+  const {address:{lat, lng}} = index.offer;
 
-    const mapElement = cardTemplate.cloneNode(true);
+  const mapElement = cardTemplate.cloneNode(true);
 
-    mapElement.querySelector('.popup__avatar').src = avatar;
-    mapElement.querySelector('.popup__title').textContent = title;
-    mapElement.querySelector('.popup__text--address').textContent = `${lat },${ lng}`;
-    mapElement.querySelector('[data-price]').textContent = price;
-    mapElement.querySelector('.popup__text--capacity').textContent = `${rooms} ${rooms === 1 ? 'комната' : 'комнат(ы)'} для ${ guests } ${guests === 1 ? 'гостя' : 'гостей'}`;
-    mapElement.querySelector('.popup__text--time').textContent = `Заезд после ${ checkin }, выезд до ${ checkout}`;
-    mapElement.querySelector('.popup__type').textContent = type;
+  mapElement.querySelector('.popup__avatar').src = avatar;
+  mapElement.querySelector('.popup__title').textContent = title;
+  mapElement.querySelector('.popup__text--address').textContent = `${lat },${ lng}`;
+  mapElement.querySelector('[data-price]').textContent = price;
+  mapElement.querySelector('.popup__text--capacity').textContent = `${rooms} ${rooms === 1 ? 'комната' : 'комнат(ы)'} для ${ guests } ${guests === 1 ? 'гостя' : 'гостей'}`;
+  mapElement.querySelector('.popup__text--time').textContent = `Заезд после ${ checkin }, выезд до ${ checkout}`;
+  mapElement.querySelector('.popup__type').textContent = type;
 
-    renderPhoto(mapElement, photos);
-    renderDescription(mapElement, description);
-    renderFeatures(mapElement, features);
+  renderPhoto(mapElement, photos);
+  renderDescription(mapElement, description);
+  renderFeatures(mapElement, features);
 
-    if (!checkin || !checkout) {
-      mapElement.querySelector('.popup__text--time').classList.add('hidden');
-    }
-    if (!type) {
-      mapElement.querySelector('.popup__type').classList.add('hidden');
-    }
-
-    popupFragment.appendChild(mapElement);
-  });
-
-  const arrayFragment = popupFragment.querySelectorAll('.popup');
-  mapCanvasElement.appendChild(arrayFragment[index]);
+  if (!checkin || !checkout) {
+    mapElement.querySelector('.popup__text--time').classList.add('hidden');
+  }
+  if (!type) {
+    mapElement.querySelector('.popup__type').classList.add('hidden');
+  }
+  return mapElement;
 };
 
-export { renderPopupElements };
+export { renderElements };
