@@ -26,7 +26,7 @@ const onTypeChange = () => {
 };
 
 
-const activatedOff = () => {
+const toggleOff = () => {
   noticeForm.classList.add('ad-form--disabled');
   const fieldsets = noticeForm.querySelectorAll('fieldset');
   fieldsets.forEach((fieldset) => {
@@ -38,7 +38,7 @@ const activatedOff = () => {
   priceField.removeEventListener('change', onPriceChange);
 };
 
-const activatedOn = () => {
+const toggleOn = () => {
   noticeForm.classList.remove('ad-form--disabled');
   const fieldsets = noticeForm.querySelectorAll('fieldset');
   fieldsets.forEach((fieldset) => {
@@ -99,4 +99,4 @@ noticeForm.addEventListener('submit', (evt) => {
   if(!isValid) {evt.preventDefault();}
 });
 
-export { activatedOff, activatedOn };
+export { toggleOff, toggleOn };

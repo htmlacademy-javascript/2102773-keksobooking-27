@@ -1,23 +1,24 @@
-import { activatedOn, activatedOff } from './notice-form.js';
+import { toggleOn, toggleOff } from './notice-form.js';
 import { turnOn, turnOff } from './filter.js';
 import { getArrayOfNoticeObjects } from './data.js';
 import { renderElements } from './popup.js';
 
-const noticeForm = document.querySelector('.ad-form');
-const address = noticeForm.querySelector('#address');
-const mapCanvasElements = getArrayOfNoticeObjects();
 const START_COORDINATE = {
   lat: 35.68944,
   lng: 139.69171,
 };
 
+const noticeForm = document.querySelector('.ad-form');
+const address = noticeForm.querySelector('#address');
+const mapCanvasElements = getArrayOfNoticeObjects();
+
 turnOff();
-activatedOff();
+toggleOff();
 
 const map = L.map('map-canvas')
   .on('load', () => {
     turnOn();
-    activatedOn();
+    toggleOn();
     address.value = `${START_COORDINATE.lat.toFixed(5)}, ${START_COORDINATE.lng.toFixed(5)}`;
   })
   .setView(START_COORDINATE, 12);
