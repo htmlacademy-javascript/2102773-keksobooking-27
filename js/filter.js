@@ -5,6 +5,7 @@ const turnOff = () => {
     filter.disabled = true;
   }
 };
+
 const turnOn = () => {
   filterElement.classList.remove('map__filters--disabled');
   for (const filter of filterElement.children) {
