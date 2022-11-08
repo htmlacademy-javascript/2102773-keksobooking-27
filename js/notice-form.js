@@ -1,10 +1,15 @@
-import { onPriceChange } from './slider.js';
+import { onPriceChange, sliderReset } from './slider.js';
+import { openErrorMessage } from './message-popup.js';
+import { sendData } from './api.js';
+import { markerReset, setAddress, START_COORDINATE } from './map.js';
 
 const noticeForm = document.querySelector('.ad-form');
 const timein = noticeForm.querySelector('#timein');
 const timeout = noticeForm.querySelector('#timeout');
 const priceField = noticeForm.querySelector('#price');
 const typeField = noticeForm.querySelector('#type');
+const submitButton = document.querySelector('.ad-form__submit');
+const resetButton = document.querySelector('.ad-form__reset');
 
 const minPrice = {
   'bungalow' : 0,
@@ -24,7 +29,6 @@ const onTypeChange = () => {
   priceField.placeholder = minPrice[typeField.value];
   priceField.min = minPrice[typeField.value];
 };
-
 
 const toggleOff = () => {
   noticeForm.classList.add('ad-form--disabled');
@@ -94,9 +98,46 @@ function getPriceErrorMessage () {
 
 pristine.addValidator(priceField, validatePrice, getPriceErrorMessage);
 
-noticeForm.addEventListener('submit', (evt) => {
-  const isValid = pristine.validate();
-  if(!isValid) {evt.preventDefault();}
-});
+const blockSubmitButton = () => {
+  submitButton.disabled = true;
+  submitButton.textContent = 'Отправляю...';
+};
 
-export { toggleOff, toggleOn };
+const unblockSubmitButton = () => {
+  submitButton.disabled = false;
+  submitButton.textContent = 'Опубликовать';
+};
+
+const setSubmit = (onSuccess) => {
+  noticeForm.addEventListener('submit', (evt) => {
+    evt.preventDefault();
+    const isValid = pristine.validate();
+    if(isValid) {
+      blockSubmitButton();
+      sendData(
+        () => {
+          evt.target.reset();
+          onSuccess();
+          unblockSubmitButton();
+          sliderReset();
+        },
+        () => {
+          openErrorMessage ();
+          unblockSubmitButton();
+        },
+        new FormData(evt.target),
+      );
+    }
+  });
+};
+const setReset = () => {
+  resetButton.addEventListener('click', (evt) => {
+    evt.preventDefault();
+    noticeForm.reset();
+    sliderReset();
+    markerReset(START_COORDINATE);
+    setAddress(START_COORDINATE);
+  });
+};
+
+export { toggleOff, toggleOn, setSubmit, setReset };

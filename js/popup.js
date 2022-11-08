@@ -46,13 +46,13 @@ const renderElements = (index) => {
   const {avatar} = index.author;
   const {title, price, rooms, guests, photos} = index.offer;
   const {description, features, checkin, checkout, type} = index.offer;
-  const {address:{lat, lng}} = index.offer;
+  const {address} = index.offer;
 
   const mapElement = cardTemplate.cloneNode(true);
 
   mapElement.querySelector('.popup__avatar').src = avatar;
   mapElement.querySelector('.popup__title').textContent = title;
-  mapElement.querySelector('.popup__text--address').textContent = `${lat },${ lng}`;
+  mapElement.querySelector('.popup__text--address').textContent = address;
   mapElement.querySelector('[data-price]').textContent = price;
   mapElement.querySelector('.popup__text--capacity').textContent = `${rooms} ${rooms === 1 ? 'комната' : 'комнат(ы)'} для ${ guests } ${guests === 1 ? 'гостя' : 'гостей'}`;
   mapElement.querySelector('.popup__text--time').textContent = `Заезд после ${ checkin }, выезд до ${ checkout}`;
