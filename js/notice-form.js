@@ -30,7 +30,7 @@ const onTypeChange = () => {
   priceField.min = minPrice[typeField.value];
 };
 
-const toggleOff = () => {
+const disable = () => {
   noticeForm.classList.add('ad-form--disabled');
   const fieldsets = noticeForm.querySelectorAll('fieldset');
   fieldsets.forEach((fieldset) => {
@@ -42,12 +42,13 @@ const toggleOff = () => {
   priceField.removeEventListener('change', onPriceChange);
 };
 
-const toggleOn = () => {
+const enable = () => {
   noticeForm.classList.remove('ad-form--disabled');
   const fieldsets = noticeForm.querySelectorAll('fieldset');
   fieldsets.forEach((fieldset) => {
     fieldset.disabled = false;
   });
+  onTypeChange();
   timein.addEventListener('change', onTimeoutChange);
   timeout.addEventListener('change', onTimeinChange);
   typeField.addEventListener('change', onTypeChange);
@@ -108,7 +109,7 @@ const unblockSubmitButton = () => {
   submitButton.textContent = 'Опубликовать';
 };
 
-const setSubmit = (onSuccess) => {
+const submit = (onSuccess) => {
   noticeForm.addEventListener('submit', (evt) => {
     evt.preventDefault();
     const isValid = pristine.validate();
@@ -120,6 +121,7 @@ const setSubmit = (onSuccess) => {
           onSuccess();
           unblockSubmitButton();
           sliderReset();
+          onTypeChange();
         },
         () => {
           openErrorMessage ();
@@ -130,14 +132,15 @@ const setSubmit = (onSuccess) => {
     }
   });
 };
-const setReset = () => {
+const reset = () => {
   resetButton.addEventListener('click', (evt) => {
     evt.preventDefault();
     noticeForm.reset();
     sliderReset();
     markerReset(START_COORDINATE);
     setAddress(START_COORDINATE);
+    onTypeChange();
   });
 };
 
-export { toggleOff, toggleOn, setSubmit, setReset };
+export { disable, enable, submit, reset };
