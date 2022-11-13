@@ -3,23 +3,38 @@ import * as form from './notice-form.js';
 import { initMap, setOnMapLoad, setOnMainPin, setMarker, setAddress, markerReset, START_COORDINATE } from './map.js';
 import { openSuccessMessage } from './message-popup.js';
 import { getData } from './api.js';
+import { debounce } from './util.js';
+
+const TIMEOUT_DELAY = 500;
+
+form.disable();
+filter.deactivate();
+setAddress(START_COORDINATE);
+setOnMainPin(setAddress);
 
 setOnMapLoad(() => {
-  setOnMainPin(setAddress);
-  setAddress(START_COORDINATE);
-  form.enable();
-  getData((offers) => setMarker(offers));
-  filter.activate();
+  getData((offers) => {
+    filter.getFilteredOffers(offers);
+    setMarker(offers);
+    filter.setOnFilterChange(debounce(() => setMarker(filter.getFilteredOffers(offers)), TIMEOUT_DELAY));
+    filter.activate();
+    form.enable();
+  });
 });
 
-filter.deactivate();
-form.disable();
 initMap(START_COORDINATE);
 
 form.submit(() => {
   openSuccessMessage();
   markerReset(START_COORDINATE);
   setAddress(START_COORDINATE);
+  getData((offers) => setMarker(offers));
 });
 
-form.reset();
+form.reset(() => {
+  getData((offers) => setMarker(offers));
+});
+
+form.avatarLoad();
+form.photoLoad();
+

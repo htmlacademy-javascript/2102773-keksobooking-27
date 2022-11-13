@@ -1,7 +1,6 @@
 import { renderElements } from './popup.js';
-import { getData } from './api.js';
+import { OFFERS_COUNT } from './filter.js';
 
-const OFFERS_COUNT = 10;
 const START_COORDINATE = {
   lat: 35.66023,
   lng: 139.73007,
@@ -64,7 +63,6 @@ const createMarker = (offers) => {
       },
     );
     marker.addTo(markerGroup).bindPopup(renderElements(offer));
-
     const closePopup = () => {
       marker.closePopup();
     };
@@ -79,8 +77,10 @@ const createMarker = (offers) => {
   });
 };
 
+const clearMarker = () => markerGroup.clearLayers();
+
 const setMarker = (offers) => {
-  markerGroup.clearLayers();
+  clearMarker();
   createMarker(offers.slice(0, OFFERS_COUNT));
 };
 
@@ -92,13 +92,9 @@ const setOnMapLoad = (cb) => {
   map.on('load', cb);
 };
 
-getData ((offers) => {
-  createMarker(offers);
-});
-
 const markerReset = (coordinate) => {
   mainPinMarker.setLatLng(coordinate);
 };
 
-export { initMap, setOnMapLoad, setOnMainPin, setMarker, setAddress, markerReset, START_COORDINATE };
+export { initMap, setOnMapLoad, setOnMainPin, setMarker, setAddress, markerReset, START_COORDINATE, clearMarker };
 

@@ -2,6 +2,10 @@ import { onPriceChange, sliderReset } from './slider.js';
 import { openErrorMessage } from './message-popup.js';
 import { sendData } from './api.js';
 import { markerReset, setAddress, START_COORDINATE } from './map.js';
+import { filterElement } from './filter.js';
+
+const DEFAULT_AVATAR = 'img/muffin-grey.svg';
+const FILE_TYPES = ['jpg', 'jpeg', 'png'];
 
 const noticeForm = document.querySelector('.ad-form');
 const timein = noticeForm.querySelector('#timein');
@@ -10,6 +14,10 @@ const priceField = noticeForm.querySelector('#price');
 const typeField = noticeForm.querySelector('#type');
 const submitButton = document.querySelector('.ad-form__submit');
 const resetButton = document.querySelector('.ad-form__reset');
+const avatarChooser = document.querySelector('.ad-form__field input[type=file]');
+const avatarPreview = document.querySelector('.ad-form-header__preview img');
+const photoChooser = document.querySelector('.ad-form__upload input[type=file]');
+const previewPhoto = document.querySelector('.ad-form__photo');
 
 const minPrice = {
   'bungalow' : 0,
@@ -122,6 +130,9 @@ const submit = (onSuccess) => {
           unblockSubmitButton();
           sliderReset();
           onTypeChange();
+          previewPhoto.innerHTML = '';
+          avatarPreview.src = DEFAULT_AVATAR;
+          filterElement.reset();
         },
         () => {
           openErrorMessage ();
@@ -132,7 +143,7 @@ const submit = (onSuccess) => {
     }
   });
 };
-const reset = () => {
+const reset = (cb) => {
   resetButton.addEventListener('click', (evt) => {
     evt.preventDefault();
     noticeForm.reset();
@@ -140,7 +151,40 @@ const reset = () => {
     markerReset(START_COORDINATE);
     setAddress(START_COORDINATE);
     onTypeChange();
+    previewPhoto.innerHTML = '';
+    avatarPreview.src = DEFAULT_AVATAR;
+    filterElement.reset();
+    cb();
   });
 };
+const isValidType = (file) => {
+  const fileName = file.name.toLowerCase();
+  const matches = FILE_TYPES.some((it) => fileName.endsWith(it));
+  return matches;
+};
 
-export { disable, enable, submit, reset };
+const avatarLoad = () => {avatarChooser.addEventListener('change', () => {
+  const file = avatarChooser.files[0];
+
+  if (file && isValidType(file)) {
+    avatarPreview.src = URL.createObjectURL(file);
+  }
+});
+};
+
+const photoLoad = () => {photoChooser.addEventListener('change', () => {
+  const file = photoChooser.files[0];
+
+  if (file && isValidType(file)) {
+    previewPhoto.innerHTML = '';
+    const photo = document.createElement('img');
+    photo.src = URL.createObjectURL(file);
+    photo.style.height = '100%';
+    photo.style.width = '100%';
+    photo.style.objectFit = 'contain';
+    previewPhoto.appendChild(photo);
+  }
+});
+};
+
+export { disable, enable, submit, reset, avatarLoad, photoLoad };

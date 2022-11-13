@@ -1,3 +1,11 @@
+const TYPES_DICTIONARY = {
+  flat: 'Квартира',
+  bungalow: 'Бунгало',
+  house:'Дом',
+  palace:'Дворец',
+  hotel:'Отель'
+};
+
 const cardTemplate = document.querySelector('#card').content.querySelector('.popup');
 const renderPhoto = (mapElement, photos) => {
   const photosContainer = mapElement.querySelector('.popup__photos');
@@ -56,7 +64,7 @@ const renderElements = (index) => {
   mapElement.querySelector('[data-price]').textContent = price;
   mapElement.querySelector('.popup__text--capacity').textContent = `${rooms} ${rooms === 1 ? 'комната' : 'комнат(ы)'} для ${ guests } ${guests === 1 ? 'гостя' : 'гостей'}`;
   mapElement.querySelector('.popup__text--time').textContent = `Заезд после ${ checkin }, выезд до ${ checkout}`;
-  mapElement.querySelector('.popup__type').textContent = type;
+  mapElement.querySelector('.popup__type').textContent = TYPES_DICTIONARY[(type)];
 
   renderPhoto(mapElement, photos);
   renderDescription(mapElement, description);
