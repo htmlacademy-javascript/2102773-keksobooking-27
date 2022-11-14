@@ -50,6 +50,30 @@ const renderFeatures = (mapElement, features) => {
   }
 };
 
+const getRoomsEnding = (roomCount) => {
+  switch (roomCount) {
+    case 1:
+      return 'комната';
+    case 2:
+    case 3:
+    case 4:
+      return 'комнаты';
+    default:
+      return 'комнат';
+  }
+};
+
+const getGuestsEnding = (guestCount) => {
+  switch (guestCount) {
+    case 0:
+      return 'не для гостей';
+    case 1:
+      return `для ${guestCount} гостя`;
+    default:
+      return `для ${guestCount} гостей`;
+  }
+};
+
 const renderElements = (index) => {
   const {avatar} = index.author;
   const {title, price, rooms, guests, photos} = index.offer;
@@ -62,7 +86,7 @@ const renderElements = (index) => {
   mapElement.querySelector('.popup__title').textContent = title;
   mapElement.querySelector('.popup__text--address').textContent = address;
   mapElement.querySelector('[data-price]').textContent = price;
-  mapElement.querySelector('.popup__text--capacity').textContent = `${rooms} ${rooms === 1 ? 'комната' : 'комнат(ы)'} для ${ guests } ${guests === 1 ? 'гостя' : 'гостей'}`;
+  mapElement.querySelector('.popup__text--capacity').textContent = `${rooms} ${getRoomsEnding(rooms)} ${getGuestsEnding(guests)}`;
   mapElement.querySelector('.popup__text--time').textContent = `Заезд после ${ checkin }, выезд до ${ checkout}`;
   mapElement.querySelector('.popup__type').textContent = TYPES_DICTIONARY[(type)];
 
