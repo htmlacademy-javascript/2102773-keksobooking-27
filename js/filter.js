@@ -25,16 +25,16 @@ const activate = () => {
   }
 };
 
-const housingFilterType = (offers, type) =>
+const checkHousingType = (offers, type) =>
   housingTypeInput.value === offers.offer.type || type === 'any';
 
-const housingFilterRooms = (offers, rooms) =>
+const checkHousingRooms = (offers, rooms) =>
   rooms === 'any' || offers.offer.rooms === Number(rooms);
 
-const housingFilterGuests = (offers, guests) =>
+const checkHousingGuests = (offers, guests) =>
   guests === 'any' || offers.offer.guests === Number(guests);
 
-const housingFilterPrice = (offers, price) => {
+const checkHousingPrice = (offers, price) => {
   switch (price) {
     case 'any':
       return true;
@@ -47,7 +47,7 @@ const housingFilterPrice = (offers, price) => {
   }
 };
 
-const housingFilterFeatures = (offers, features) => {
+const checkHousingFeatures = (offers, features) => {
   if (!features.length) {
     return true;
   }
@@ -79,11 +79,11 @@ const getFilteredOffers = (offers) => {
   for (let i = 0; i < offers.length; i++) {
     const offer = offers[i];
     if (
-      housingFilterType(offer, selectedType) &&
-      housingFilterRooms(offer, selectedRooms) &&
-      housingFilterGuests(offer, selectedGuests) &&
-      housingFilterPrice(offer, selectedPrice) &&
-      housingFilterFeatures(offer, selectedFeatures)
+      checkHousingType(offer, selectedType) &&
+      checkHousingRooms(offer, selectedRooms) &&
+      checkHousingGuests(offer, selectedGuests) &&
+      checkHousingPrice(offer, selectedPrice) &&
+      checkHousingFeatures(offer, selectedFeatures)
     ) {
 
       filteredOffers.push(offer);
