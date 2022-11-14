@@ -1,0 +1,40 @@
+import * as filter from './filter.js';
+import * as form from './notice-form.js';
+import { initMap, setOnMapLoad, setOnMainPin, setMarker, setAddress, markerReset, START_COORDINATE } from './map.js';
+import { openSuccessMessage } from './message-popup.js';
+import { getData } from './api.js';
+import { debounce } from './util.js';
+
+const TIMEOUT_DELAY = 500;
+
+form.disable();
+filter.deactivate();
+setAddress(START_COORDINATE);
+setOnMainPin(setAddress);
+
+setOnMapLoad(() => {
+  getData((offers) => {
+    filter.getFilteredOffers(offers);
+    setMarker(offers);
+    filter.setOnFilterChange(debounce(() => setMarker(filter.getFilteredOffers(offers)), TIMEOUT_DELAY));
+    filter.activate();
+    form.enable();
+  });
+});
+
+initMap(START_COORDINATE);
+
+form.submit(() => {
+  openSuccessMessage();
+  markerReset(START_COORDINATE);
+  setAddress(START_COORDINATE);
+  getData((offers) => setMarker(offers));
+});
+
+form.reset(() => {
+  getData((offers) => setMarker(offers));
+});
+
+form.avatarLoad();
+form.photoLoad();
+
