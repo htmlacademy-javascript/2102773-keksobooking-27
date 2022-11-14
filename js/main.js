@@ -13,12 +13,12 @@ setAddress(START_COORDINATE);
 setOnMainPin(setAddress);
 
 setOnMapLoad(() => {
+  form.enable();
   getData((offers) => {
     filter.getFilteredOffers(offers);
     setMarker(offers);
     filter.setOnFilterChange(debounce(() => setMarker(filter.getFilteredOffers(offers)), TIMEOUT_DELAY));
     filter.activate();
-    form.enable();
   });
 });
 
