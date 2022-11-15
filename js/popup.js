@@ -51,7 +51,7 @@ const renderFeatures = (mapElement, features) => {
 };
 
 const getRoomsEnding = (roomCount) => {
-  switch (roomCount) {
+  switch (roomCount % 10) {
     case 1:
       return 'комната';
     case 2:
