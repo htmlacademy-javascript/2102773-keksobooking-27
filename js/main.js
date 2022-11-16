@@ -1,6 +1,6 @@
 import * as filter from './filter.js';
 import * as form from './notice-form.js';
-import { initMap, setOnMapLoad, setOnMainPin, setMarker, setAddress, markerReset, START_COORDINATE } from './map.js';
+import { initMap, setOnMapLoad, setOnMainPin, setMarker, setAddress, resetMainPin, START_COORDINATE } from './map.js';
 import { openSuccessMessage } from './message-popup.js';
 import { getData } from './api.js';
 import { debounce } from './util.js';
@@ -26,15 +26,17 @@ initMap(START_COORDINATE);
 
 form.submit(() => {
   openSuccessMessage();
-  markerReset(START_COORDINATE);
+  resetMainPin(START_COORDINATE);
   setAddress(START_COORDINATE);
   getData((offers) => setMarker(offers));
 });
 
 form.reset(() => {
+  resetMainPin(START_COORDINATE);
+  setAddress(START_COORDINATE);
   getData((offers) => setMarker(offers));
 });
 
-form.avatarLoad();
-form.photoLoad();
+form.changeAvatar();
+form.changePhoto();
 

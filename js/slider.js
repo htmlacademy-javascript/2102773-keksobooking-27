@@ -29,10 +29,10 @@ sliderElement.noUiSlider.on('slide', () => {
 
 priceElement.addEventListener('change', onPriceChange);
 
-const sliderReset = () => {
+const resetSlider = () => {
   sliderElement.noUiSlider.updateOptions(
     {start: 0}
   );
 };
 
-export { onPriceChange, sliderReset };
+export { onPriceChange, resetSlider };

@@ -6,14 +6,14 @@ const START_COORDINATE = {
   lng: 139.73007,
 };
 
-const noticeForm = document.querySelector('.ad-form');
-const address = noticeForm.querySelector('#address');
+const noticeFormElement = document.querySelector('.ad-form');
+const addressElement = noticeFormElement.querySelector('#address');
 
 const map = L.map('map-canvas');
 const markerGroup = L.layerGroup().addTo(map);
 
 const setAddress = (coordinate) => {
-  address.value = `${coordinate.lat.toFixed(5)}, ${coordinate.lng.toFixed(5)}`;
+  addressElement.value = `${coordinate.lat.toFixed(5)}, ${coordinate.lng.toFixed(5)}`;
 };
 
 const mainPinIcon = L.icon({
@@ -67,11 +67,11 @@ const createMarker = (offers) => {
       marker.closePopup();
     };
 
-    noticeForm.addEventListener('submit', () => {
+    noticeFormElement.addEventListener('submit', () => {
       closePopup();
     });
 
-    noticeForm.addEventListener('reset', () => {
+    noticeFormElement.addEventListener('reset', () => {
       closePopup();
     });
   });
@@ -92,9 +92,8 @@ const setOnMapLoad = (cb) => {
   map.on('load', cb);
 };
 
-const markerReset = (coordinate) => {
+const resetMainPin = (coordinate) => {
   mainPinMarker.setLatLng(coordinate);
 };
 
-export { initMap, setOnMapLoad, setOnMainPin, setMarker, setAddress, markerReset, START_COORDINATE, clearMarker };
-
+export { initMap, setOnMapLoad, setOnMainPin, setMarker, setAddress, resetMainPin, START_COORDINATE, clearMarker };

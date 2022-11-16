@@ -5,11 +5,11 @@ const Price = {
 };
 
 const filterElement = document.querySelector('.map__filters');
-const housingTypeInput = filterElement.querySelector('#housing-type');
-const housingPriceInput = filterElement.querySelector('#housing-price');
-const housingRoomsInput = filterElement.querySelector('#housing-rooms');
-const housingGuestsInput = filterElement.querySelector('#housing-guests');
-const featureCheckboxes = filterElement.querySelectorAll('.map__checkbox');
+const housingTypeElement = filterElement.querySelector('#housing-type');
+const housingPriceElement = filterElement.querySelector('#housing-price');
+const housingRoomsElement = filterElement.querySelector('#housing-rooms');
+const housingGuestsElement = filterElement.querySelector('#housing-guests');
+const housingFeatureElements = filterElement.querySelectorAll('.map__checkbox');
 
 const deactivate = () => {
   filterElement.classList.add('map__filters--disabled');
@@ -26,7 +26,7 @@ const activate = () => {
 };
 
 const checkHousingType = (offers, type) =>
-  housingTypeInput.value === offers.offer.type || type === 'any';
+  housingTypeElement.value === offers.offer.type || type === 'any';
 
 const checkHousingRooms = (offers, rooms) =>
   rooms === 'any' || offers.offer.rooms === Number(rooms);
@@ -61,14 +61,14 @@ const checkHousingFeatures = (offers, features) => {
 
 const getFilteredOffers = (offers) => {
 
-  const selectedType = housingTypeInput.value;
-  const selectedPrice = housingPriceInput.value;
-  const selectedRooms = housingRoomsInput.value;
-  const selectedGuests = housingGuestsInput.value;
+  const selectedType = housingTypeElement.value;
+  const selectedPrice = housingPriceElement.value;
+  const selectedRooms = housingRoomsElement.value;
+  const selectedGuests = housingGuestsElement.value;
 
   const selectedFeatures = [];
 
-  featureCheckboxes.forEach((checkbox) => {
+  housingFeatureElements.forEach((checkbox) => {
     if (checkbox.checked) {
       selectedFeatures.push(checkbox.value);
     }
