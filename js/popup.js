@@ -8,20 +8,20 @@ const TYPES_DICTIONARY = {
 
 const cardTemplate = document.querySelector('#card').content.querySelector('.popup');
 const renderPhoto = (mapElement, photos) => {
-  const photosContainer = mapElement.querySelector('.popup__photos');
+  const photosContainerElement = mapElement.querySelector('.popup__photos');
   if (photos && photos.length) {
     const photosListFragment = document.createDocumentFragment();
     photos.forEach((photo) => {
-      const photoListItem = mapElement.querySelector('.popup__photo');
-      const clonePhotos = photoListItem.cloneNode(true);
+      const photoListElement = mapElement.querySelector('.popup__photo');
+      const clonePhotos = photoListElement.cloneNode(true);
       clonePhotos.src = photo;
       photosListFragment.appendChild(clonePhotos);
     });
-    photosContainer.innerHTML = '';
-    photosContainer.appendChild(photosListFragment);
+    photosContainerElement.innerHTML = '';
+    photosContainerElement.appendChild(photosListFragment);
   }
   else {
-    photosContainer.classList.add('hidden');
+    photosContainerElement.classList.add('hidden');
   }
 };
 
